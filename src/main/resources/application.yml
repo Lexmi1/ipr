@@ -1,0 +1,19 @@
+services:
+  bybit:
+    symbol: BTCUSDT, ETHUSDT, BNBUSDT
+    interval: 1
+    category: linear
+    reconnect:
+      delay: 5000
+      maxAttempts: 10
+
+logging:
+  level:
+    root: INFO
+    org.springframework: INFO
+    org.hibernate: INFO
+    bybit.parser: INFO
+  file:
+    path: log.txt
+server:
+  port: 9999
