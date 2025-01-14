@@ -6,6 +6,11 @@ import com.ipr.websocket.dto.Kline;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -16,6 +21,9 @@ import java.util.Objects;
 public class KlineServiceWebsocket {
     private final ObjectMapper objectMapper;
     private final KlineMapper klineMapper;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    @Value("${spring.kafka.topic}")
+    private String kafkaTopic;
 
     @SneakyThrows
     public void processKlineMessage(String message) {
@@ -30,6 +38,13 @@ public class KlineServiceWebsocket {
                     Kline newKline = klineMapper.mapToKline(symbol, klineData);
                     log.info("С WebSocket пришла закрытая свеча - symbol: {}, startTime: {}, openPrice: {}, closePrice: {}, highPrice: {}, lowPrice: {}",
                             newKline.getKlineId().getSymbol(), newKline.getKlineId().getStartTime(), newKline.getOpen(), newKline.getClose(), newKline.getHigh(), newKline.getLow());
+
+                    // Отправляем цену последней свечи
+                    Message<String> kafkaMessage = MessageBuilder
+                            .withPayload(String.valueOf(newKline.getClose()))
+                            .setHeader(KafkaHeaders.TOPIC, kafkaTopic)
+                            .build();
+                    kafkaTemplate.send(kafkaMessage);
                 }
             });
         } else {
