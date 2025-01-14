@@ -1,5 +1,6 @@
 package com.ipr.websocket.input;
 
+import com.ipr.websocket.dto.Kline;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Component;
 public class KafkaListeners {
 
     @SneakyThrows
-    @KafkaListener(topics = "#{'${spring.kafka.topic}'}", groupId = "#{'${spring.kafka.groupId}'}")
-    void listener(String condition) {
-        log.info("Получили сообщение: {}", condition);
+    @KafkaListener(topics = "${spring.kafka.topic}", containerFactory = "strategyKlineRequestFactory")
+    void listener(Kline message) {
+        log.info("Получили сообщение. Последня закрытая свеча: {}", message);
     }
 }

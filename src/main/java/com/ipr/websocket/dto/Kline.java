@@ -18,7 +18,7 @@ import lombok.ToString;
 @ToString
 public class Kline {
 
-    private KlineId klineId;
+    private String symbol;
 
     private double open;
 

@@ -8,9 +8,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -21,7 +18,7 @@ import java.util.Objects;
 public class KlineServiceWebsocket {
     private final ObjectMapper objectMapper;
     private final KlineMapper klineMapper;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, Kline> kafkaTemplate;
     @Value("${spring.kafka.topic}")
     private String kafkaTopic;
 
@@ -36,15 +33,10 @@ public class KlineServiceWebsocket {
             webSocketKlineMessage.getData().forEach(klineData -> {
                 if (klineData.getConfirm()) {
                     Kline newKline = klineMapper.mapToKline(symbol, klineData);
-                    log.info("С WebSocket пришла закрытая свеча - symbol: {}, startTime: {}, openPrice: {}, closePrice: {}, highPrice: {}, lowPrice: {}",
-                            newKline.getKlineId().getSymbol(), newKline.getKlineId().getStartTime(), newKline.getOpen(), newKline.getClose(), newKline.getHigh(), newKline.getLow());
+                    log.info("С WebSocket пришла закрытая свеча - symbol: {}, openPrice: {}, closePrice: {}, highPrice: {}, lowPrice: {}",
+                            newKline.getSymbol(), newKline.getOpen(), newKline.getClose(), newKline.getHigh(), newKline.getLow());
 
-                    // Отправляем цену последней свечи
-                    Message<String> kafkaMessage = MessageBuilder
-                            .withPayload(String.valueOf(newKline.getClose()))
-                            .setHeader(KafkaHeaders.TOPIC, kafkaTopic)
-                            .build();
-                    kafkaTemplate.send(kafkaMessage);
+                    kafkaTemplate.send(kafkaTopic, newKline);
                 }
             });
         } else {
