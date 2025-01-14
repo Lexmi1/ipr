@@ -1,11 +1,14 @@
+spring:
+  kafka:
+    topic: topic-first
+    groupId: group-2
+    bootstrap-servers-main: localhost:9092
+
 services:
   bybit:
     symbol: BTCUSDT, ETHUSDT, BNBUSDT
     interval: 1
     category: linear
-    reconnect:
-      delay: 5000
-      maxAttempts: 10
 
 logging:
   level:
