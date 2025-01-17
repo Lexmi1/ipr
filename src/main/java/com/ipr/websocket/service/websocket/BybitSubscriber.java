@@ -10,7 +10,7 @@ import org.springframework.web.socket.client.WebSocketClient;
 
 import java.util.List;
 
-@Component
+//@Component
 @RequiredArgsConstructor
 @Slf4j
 public class BybitSubscriber {
@@ -21,7 +21,7 @@ public class BybitSubscriber {
     private final List<String> symbols;
     private final ObjectMapper objectMapper;
 
-    @PostConstruct
+//    @PostConstruct
     public void subscribeToSymbols() {
         connectToWebSocket(requestTopic());
     }

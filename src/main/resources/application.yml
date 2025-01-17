@@ -20,3 +20,7 @@ logging:
     path: log.txt
 server:
   port: 9999
+
+data:
+  mongodb:
+    uri: mongodb://localhost:27017/test
