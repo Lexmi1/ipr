@@ -1,6 +1,6 @@
-package com.ipr.websocket.config;
+package com.ipr.config.kafka;
 
-import com.ipr.websocket.dto.Kline;
+import com.ipr.dto.Kline;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

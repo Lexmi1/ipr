@@ -3,10 +3,15 @@ spring:
     topic: topic-first
     groupId: group-2
     bootstrap-servers-main: localhost:9092
+    consumer:
+      auto-offset-reset: latest
+      properties:
+        retry.backoff.ms: 1000
+        retry.max-attempts: 5
 
 services:
   bybit:
-    symbol: BTCUSDT, ETHUSDT, BNBUSDT
+    symbol: BTCUSDT
     interval: 1
     category: linear
 

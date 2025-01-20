@@ -1,4 +1,4 @@
-package com.ipr.websocket.service.websocket;
+package com.ipr.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
@@ -16,9 +16,11 @@ import java.util.List;
 public class BybitSubscriber {
 
     private final WebSocketClient webSocketClient;
-    private final KlineServiceWebsocket klineServiceWebsocket;
+    private final ProcessKlineService processKlineService;
     @Value("${services.bybit.symbol}")
     private final List<String> symbols;
+    @Value("${services.bybit.interval}")
+    private String interval;
     private final ObjectMapper objectMapper;
 
     @PostConstruct
@@ -26,10 +28,9 @@ public class BybitSubscriber {
         connectToWebSocket(requestTopic());
     }
 
-
     private void connectToWebSocket(List<String> topics) {
         webSocketClient.execute(
-                        new WebSocketClientHandler(klineServiceWebsocket, topics, objectMapper),
+                        new WebSocketClientHandler(processKlineService, topics, objectMapper),
                         "wss://stream.bybit.com/v5/public/linear")
                 .whenComplete((session, throwable) -> {
                     if (throwable != null) {
@@ -42,7 +43,7 @@ public class BybitSubscriber {
 
     private List<String> requestTopic() {
         return symbols.stream()
-                .map(symbol -> "kline.1." + symbol)
+                .map(symbol -> String.format("kline.%s.%s", interval, symbol))
                 .toList();
     }
 }

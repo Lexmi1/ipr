@@ -1,8 +1,8 @@
-package com.ipr.websocket.service.websocket;
+package com.ipr.service;
 
 import com.bybit.api.client.domain.websocket_message.public_channel.WebSocketKlineMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ipr.websocket.dto.Kline;
+import com.ipr.dto.Kline;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +15,9 @@ import java.util.Objects;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class KlineServiceWebsocket {
+public class ProcessKlineService {
     private final ObjectMapper objectMapper;
-    private final KlineMapper klineMapper;
+    private final KlineMapperService klineMapperService;
     private final KafkaTemplate<String, Kline> kafkaTemplate;
     @Value("${spring.kafka.topic}")
     private String kafkaTopic;
@@ -32,7 +32,7 @@ public class KlineServiceWebsocket {
 
             webSocketKlineMessage.getData().forEach(klineData -> {
                 if (klineData.getConfirm()) {
-                    Kline newKline = klineMapper.mapToKline(symbol, klineData);
+                    Kline newKline = klineMapperService.mapToKline(symbol, klineData);
                     log.info("С WebSocket пришла закрытая свеча - symbol: {}, openPrice: {}, closePrice: {}, highPrice: {}, lowPrice: {}",
                             newKline.getSymbol(), newKline.getOpen(), newKline.getClose(), newKline.getHigh(), newKline.getLow());
 

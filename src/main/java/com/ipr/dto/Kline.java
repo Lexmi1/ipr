@@ -1,4 +1,4 @@
-package com.ipr.websocket.dto;
+package com.ipr.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

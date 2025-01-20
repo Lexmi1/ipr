@@ -32,7 +32,3 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation group: 'io.github.wuhewuhe', name: 'bybit-java-api', version: '1.2.4'
 }
-
-tasks.named('test') {
-	useJUnitPlatform()
-}

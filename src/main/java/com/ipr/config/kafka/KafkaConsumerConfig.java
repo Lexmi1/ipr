@@ -1,7 +1,7 @@
-package com.ipr.websocket.config;
+package com.ipr.config.kafka;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ipr.websocket.dto.Kline;
+import com.ipr.dto.Kline;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;

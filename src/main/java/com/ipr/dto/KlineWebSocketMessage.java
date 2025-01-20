@@ -1,4 +1,4 @@
-package com.ipr.websocket.dto;
+package com.ipr.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;

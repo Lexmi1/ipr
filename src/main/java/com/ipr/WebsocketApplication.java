@@ -1,4 +1,4 @@
-package com.ipr.websocket;
+package com.ipr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

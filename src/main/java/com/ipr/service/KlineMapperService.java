@@ -1,11 +1,11 @@
-package com.ipr.websocket.service.websocket;
+package com.ipr.service;
 
 import com.bybit.api.client.domain.websocket_message.public_channel.KlineData;
-import com.ipr.websocket.dto.Kline;
+import com.ipr.dto.Kline;
 import org.springframework.stereotype.Service;
 
 @Service
-public class KlineMapper {
+public class KlineMapperService {
 
     public Kline mapToKline(String symbol, KlineData kline) {
         return Kline.builder()

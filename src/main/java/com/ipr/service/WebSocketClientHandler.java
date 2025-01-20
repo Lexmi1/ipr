@@ -1,7 +1,7 @@
-package com.ipr.websocket.service.websocket;
+package com.ipr.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ipr.websocket.dto.KlineWebSocketMessage;
+import com.ipr.dto.KlineWebSocketMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;
@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 class WebSocketClientHandler extends TextWebSocketHandler {
-    private final KlineServiceWebsocket klineService;
+    private final ProcessKlineService klineService;
     private final List<String> topics;
     private final ObjectMapper objectMapper;
 
