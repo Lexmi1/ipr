@@ -37,6 +37,7 @@ public class ProcessKlineService {
                             newKline.getSymbol(), newKline.getOpen(), newKline.getClose(), newKline.getHigh(), newKline.getLow());
 
                     kafkaTemplate.send(kafkaTopic, newKline);
+                    log.info("Отправили сообщение в кафку");
                 }
             });
         } else {
